@@ -10,12 +10,12 @@ class API < Grape::API
                        }.to_json, 404).finish
   end
 
-  rescue_from :all do |e|
-    Rack::Response.new({
-                           error_code: 500,
-                           error_message: e.message
-                       }.to_json, 500).finish
-  end
+  # rescue_from :all do |e|
+  #   Rack::Response.new({
+  #                          error_code: 500,
+  #                          error_message: e.message
+  #                      }.to_json, 500).finish
+  # end
 
   mount UserAPI
   mount UserSessionApi
