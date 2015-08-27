@@ -50,3 +50,4 @@ gem 'jwt'
 gem 'grape-swagger' # API docs
 gem 'swagger-ui_rails' # API docs hosting
 gem 'kramdown' # markdown support
+gem 'grape-entity'

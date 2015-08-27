@@ -1,6 +1,6 @@
 class UserSessionApi < Grape::API
   format :json
-  resource 'user_session' do
+  resource 'login' do
     desc 'User login'
     params do
       requires :username, type: String
