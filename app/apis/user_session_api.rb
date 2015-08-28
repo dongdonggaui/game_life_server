@@ -15,5 +15,11 @@ class UserSessionApi < Grape::API
         {error: 'wrong username or password'}
       end
     end
+    get 'test' do
+      {message: 'test'}
+    end
+    get 'test11' do
+      {message: 'test1'}
+    end
   end
 end

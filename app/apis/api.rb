@@ -1,16 +1,15 @@
 # require_relative 'user/user_api'
 # require_relative 'user/user_session_api'
 require 'api_error'
+require 'user_api'
 class API < Grape::API
   format :json
 
   class Grape::Middleware::Error
     def error_message(code, text)
       {
-          :error => {
-              :code => code,
-              :message => text
-          }
+          :code => code,
+          :message => text
       }.to_json
     end
   end
@@ -23,12 +22,20 @@ class API < Grape::API
     rack_response(error_message(60, 'access denied'), 403)
   end
 
+  rescue_from Api::InvalidParams do |e|
+    rack_response(error_message(30, e.message), 401)
+  end
+
   rescue_from ActiveRecord::RecordNotFound do
     rack_response(error_message(70, 'not found'), 404)
   end
 
   rescue_from Grape::Exceptions::ValidationErrors do |e|
     rack_response(error_message(20, e.message), e.status)
+  end
+
+  rescue_from StandardError do |e|
+    rack_response(error_message(20, e.message), 500)
   end
 
   rescue_from :all do |e|
@@ -41,25 +48,24 @@ class API < Grape::API
 
   helpers do
     def authenticate_user!
-      payload, _ = JWT.decode(params[:token], 'key')
-      raise Api::InvalidToken if payload.nil?
-      puts "id --> #{payload}"
+      token = params[:token]
+      raise Api::InvalidParams, 'token could not be nil' if token.nil?
+      payload, _ = JWT.decode(token, 'key')
       @current_user = User.find_by!('id = ?', payload['user_id'])
-      # begin
-      # user = User.where(name: '123').first
-      #
-      #   # @current_user = User.where(id: payload['user_id']).first
-      # rescue StandardError
-      # end
       error!({error: 'unauthorized access'}, 401) if @current_user.nil?
     end
 
     def current_user
       @current_user
     end
+
+    def wrap_response(obj)
+      {code: 1, message: 'success', data: obj}
+    end
   end
 
   mount UserAPI
+  mount GameAPI
   mount UserSessionApi
   add_swagger_documentation api_version:'v1',
                             mount_path: '/docs',

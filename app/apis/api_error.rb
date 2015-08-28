@@ -6,4 +6,8 @@ module Api
   class AccessDenied < StandardError
 
   end
+
+  class InvalidParams < StandardError
+
+  end
 end
