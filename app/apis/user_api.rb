@@ -1,3 +1,4 @@
+require 'api_error'
 class UserAPI < Grape::API
   format :json
   resources 'users' do
@@ -10,7 +11,8 @@ class UserAPI < Grape::API
       nickname = "USER#{DateTime.now.strftime('%Y%m%d%H%M%s')}"
       user = User.new username: params[:username], password: params[:password], nickname: nickname, email: params[:username]
       if user.save
-        wrap_response(nil)
+        token = JWT.encode({user_id: user.id}, 'key')
+        wrap_response({token: token})
       else
         raise StandardError, user.errors.full_messages
       end
@@ -23,7 +25,7 @@ class UserAPI < Grape::API
 
     desc 'Test'
     get 'list' do
-      {msg: '1112'}
+      {msg: '11121'}
     end
 
     get 'add' do

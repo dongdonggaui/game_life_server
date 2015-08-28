@@ -6,7 +6,6 @@ end
 class UserInfo < User
   include Grape::Entity::DSL
   class Entity < Grape::Entity
-    expose :id
-    unexpose :password_digest
+    expose :id, :nickname, :email, :gender, :description, :avatar_url
   end
 end

@@ -6,7 +6,7 @@ class AddDetailInfoToUsers < ActiveRecord::Migration
     add_column :users, :province, :string
     add_column :users, :city, :string
     add_column :users, :location, :string
-    add_column :users, :gender,
+    add_column :users, :gender, :string
     add_column :users, :description, :string
     add_column :users, :followers_count, :integer
     add_column :users, :friends_count, :integer

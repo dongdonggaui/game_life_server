@@ -64,9 +64,10 @@ class API < Grape::API
     end
   end
 
-  mount UserAPI
+  # mount UserAPI
   mount GameAPI
   mount UserSessionApi
+  mount UserMirrorAPI
   add_swagger_documentation api_version:'v1',
                             mount_path: '/docs',
                             hide_format: true,

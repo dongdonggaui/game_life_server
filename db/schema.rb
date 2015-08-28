@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150827092801) do
+ActiveRecord::Schema.define(version: 20150828154256) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,8 +19,8 @@ ActiveRecord::Schema.define(version: 20150827092801) do
   create_table "users", force: :cascade do |t|
     t.string   "username"
     t.string   "password_digest"
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.datetime "created_at",                                                                      null: false
+    t.datetime "updated_at",                                                                      null: false
     t.string   "nickname"
     t.string   "email"
     t.string   "phone"
@@ -33,6 +33,7 @@ ActiveRecord::Schema.define(version: 20150827092801) do
     t.integer  "friends_count"
     t.integer  "games_count"
     t.integer  "status_count"
+    t.string   "avatar_url",      default: "http://img-storage.qiniudn.com/15-8-29/10112867.jpg"
   end
 
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
