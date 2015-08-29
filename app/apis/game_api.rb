@@ -2,9 +2,20 @@ class GameAPI < Grape::API
   format :json
   resources 'games' do
     desc 'All games list'
-    # TODO 'game list'
     get do
-      {games: 'games'}
+      Game.all
+    end
+
+    desc 'Add new game'
+    params do
+      requires :name, type: String, desc: 'Game name'
+      requires :description, type: String, desc: 'Game Description'
+      requires :company, type: String, desc: 'Game company'
+      requires :publish_time, type: Date, desc: 'Game publish time'
+    end
+    post do
+      Game.create! name: params[:name], description: params[:description], company: params[:company], publish_time: params[:pubsh_time]
+      wrap_response(nil)
     end
 
     desc 'test'

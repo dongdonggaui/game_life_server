@@ -17,7 +17,9 @@ class UserMirrorAPI < Grape::API
       end
     end
 
-    desc 'Get all users list'
+    desc 'Get all users list', {
+      params: User::UserInfo::Entity.documentation
+    }
     get do
       users = User.all
       present users, with: UserInfo::Entity
@@ -53,6 +55,19 @@ class UserMirrorAPI < Grape::API
         raise StandardError, 'update avatar error'
       end
     end
+
+    desc 'Update user description'
+    params do
+      requires :description, type: String, desc: 'Description to be update'
+    end
+    put 'description' do
+      if current_user.update description: params[:description]
+        wrap_response(nil)
+      else
+        raise StandardError, 'update description error'
+      end
+    end
+
   end
 
   resources 'mirror' do
